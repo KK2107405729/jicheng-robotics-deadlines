@@ -2,6 +2,8 @@
 
 > 机器人学术会议的投稿雷达。把下一个截稿日，变成坐标。
 
+**在线站点：** [https://kk2107405729.github.io/jicheng-robotics-deadlines/](https://kk2107405729.github.io/jicheng-robotics-deadlines/)
+
 机程是一个面向机器人研究者的会议截止日期数据库与 Web 应用。它把 ICRA、IROS、RSS、CoRL、HRI、CASE、RO-MAN、Humanoids 等会议的**投稿日期、会期、地点、投稿入口、论文索引、数据来源**收进同一张可筛选的时间地图。
 
 参考了 [ccfddl](https://ccfddl.com/) 对截止日的组织方式，但界面、研究方向分类、论文索引与导出结构为独立实现，数据事实回到会议官网 / IEEE RAS 逐条核验。
@@ -110,6 +112,7 @@ src/
   styles.css              设计系统与响应式样式
 scripts/
   check-links.mjs         外链检查
+  publish-pages.sh        构建并发布到 gh-pages
 preview/
   home.png                首页预览
   ratings.png             评级筛选与会议卡片
@@ -136,14 +139,20 @@ preview/
 
 ## 部署到 GitHub Pages
 
-仓库内置 [`.github/workflows/pages.yml`](.github/workflows/pages.yml)：
+当前站点通过 **`gh-pages` 分支**发布，构建产物在 [`preview`](preview) 之外的 `dist/` 中生成，不提交到 `main`。
 
-1. 推送到 `main` 分支。
-2. GitHub Actions 自动安装依赖、构建 `dist/`，并发布到 GitHub Pages。
-3. 在仓库 `Settings → Pages → Build and deployment` 中选择 **GitHub Actions**。
+更新线上站点：
 
-如果仓库名为 `<username>.github.io`，站点地址是 `https://<username>.github.io/`；
-如果是普通项目仓库，地址是 `https://<username>.github.io/<repo>/`。当前 `base: './'` 同时适配两种路径。
+```bash
+pnpm build
+./scripts/publish-pages.sh
+```
+
+脚本会重新构建、把 `dist/` 复制到临时目录，并强制推送到 `gh-pages` 分支。GitHub Pages 已配置为从 `gh-pages` 的根目录发布。
+
+站点地址：
+
+`https://kk2107405729.github.io/jicheng-robotics-deadlines/`
 
 ## 设计
 
